@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Mesaj din inimă</title>
+    <style>
+        body {
+            background-color: #ffe6e6;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 50px;
+            overflow: hidden;
+        }
+
+        /* Text scris */
+        h1 {
+            color: #cc0000;
+            font-size: 28px;
+            min-height: 40px;
+        }
+
+        /* Inima */
+        img {
+            width: 220px;
+            cursor: pointer;
+            animation: heartbeat 1.5s infinite;
+            margin-top: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes heartbeat {
+            0%   { transform: scale(1); }
+            25%  { transform: scale(1.15); }
+            50%  { transform: scale(1); }
+            75%  { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Instrucțiune */
+        p {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #990000;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Inimioare plutitoare */
+        .hearts {
+            position: fixed;
+            bottom: -50px;
+            font-size: 24px;
+            color: red;
+            animation: floatUp 5s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1 id="titlu"></h1>
+
+    <img src="inima.png" alt="Inimă" onclick="playMessage()">
+
+    <p>Apasă pe inimă ca să auzi mesajul meu ❤</p>
+
+    <!-- Audio pentru mesaj -->
+    <audio id="mesajAudio" src="mesaj.mp3"></audio>
+
+    <script>
+        // Text care se scrie literă cu literă
+        var text = "Inima mea are ceva să-ți spună...";
+        var index = 0;
+        var viteza = 100; // viteza de scriere (ms)
+
+        function scrieText() {
+            if (index < text.length) {
+                document.getElementById("titlu").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(scrieText, viteza);
+            } else {
+                startHearts();
+            }
+        }
+        scrieText();
+
+        // Redă mesajul când apeși pe inimă
+        function playMessage() {
+            var audioMesaj = document.getElementById("mesajAudio");
+            audioMesaj.play();
+        }
+
+        // Inimioare plutitoare
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("hearts");
+                heart.innerHTML = "❤";
+                heart.style.left = Math.random() * window.innerWidth + "px";
+                heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 5000);
+            }, 300);
+        }
+    </script>
+</body>
+</html>
